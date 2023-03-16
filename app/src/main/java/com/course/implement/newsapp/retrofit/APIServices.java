@@ -17,6 +17,8 @@ public interface APIServices {
     @GET("v2/top-headlines?sources=techcrunch")
     Call<Articles> getTechCrunchArticles(@Query("apiKey") String apiKey);
 
+    @GET("v2/everything?q=apple&from=2023-03-15&to=2023-03-15&sortBy=popularity")
+    Call<Articles> getAllNews(@Query("apiKey") String apiKey);
 
 }
 //https://newsapi.org/

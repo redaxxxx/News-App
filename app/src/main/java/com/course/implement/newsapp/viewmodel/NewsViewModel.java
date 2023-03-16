@@ -30,4 +30,8 @@ public class NewsViewModel extends ViewModel {
     public MutableLiveData<List<Article>> getTechCrunchArticles(String apiKey){
         return repository.getTechCrunchArticle(apiKey);
     }
+
+    public MutableLiveData<List<Article>> getAllNewsArticles(String apiKey){
+        return  repository.getAllNews(apiKey);
+    }
 }

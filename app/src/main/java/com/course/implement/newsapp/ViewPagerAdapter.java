@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.course.implement.newsapp.views.fragments.AllNewsFragment;
 import com.course.implement.newsapp.views.fragments.TechCrunchFragment;
 import com.course.implement.newsapp.views.fragments.BusinessFragment;
 import com.course.implement.newsapp.views.fragments.TeslaFragment;
@@ -22,9 +23,12 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         switch (position){
 
             case 0:
-                fragment = new TechCrunchFragment();
+                fragment = new AllNewsFragment();
                 return fragment;
             case 1:
+                fragment = new TechCrunchFragment();
+                return fragment;
+            case 2:
                 fragment= new TeslaFragment();
                 return fragment;
             default:
@@ -35,6 +39,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

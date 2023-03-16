@@ -18,6 +18,7 @@ import retrofit2.Response;
 
 public class Repository {
 
+    private MutableLiveData<List<Article>> allNewsLiveData;
     private MutableLiveData<List<Article>> teslaArticleLiveData;
     private MutableLiveData<List<Article>> businessArticleLiveData;
     private MutableLiveData<List<Article>> techCrunchArticleLiveData;
@@ -26,8 +27,33 @@ public class Repository {
         teslaArticleLiveData = new MutableLiveData<>();
         businessArticleLiveData = new MutableLiveData<>();
         techCrunchArticleLiveData = new MutableLiveData<>();
+        allNewsLiveData = new MutableLiveData<>();
     }
 
+    public MutableLiveData<List<Article>> getAllNews(String apiKey){
+        Call<Articles> call = HTTP.create(APIServices.class).getAllNews(apiKey);
+        call.enqueue(new Callback<Articles>() {
+            @Override
+            public void onResponse(Call<Articles> call, Response<Articles> response) {
+                if (response.body() != null){
+                    List<Article> articles = response.body().getArticles();
+                    if (articles == null){
+                        allNewsLiveData.postValue(null);
+                    }else {
+                        if (articles.size() > 0){
+                            allNewsLiveData.setValue(articles);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Articles> call, Throwable t) {
+                Log.e("Connection Failed", t.getLocalizedMessage());
+            }
+        });
+        return allNewsLiveData;
+    }
     public MutableLiveData<List<Article>> getTeslaArticle(String apiKey){
         Call<Articles> call = HTTP.create(APIServices.class).getTeslaArticles(apiKey);
         call.enqueue(new Callback<Articles>() {

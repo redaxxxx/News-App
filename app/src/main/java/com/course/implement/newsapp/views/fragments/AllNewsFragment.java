@@ -19,51 +19,48 @@ import com.course.implement.newsapp.NewsActivity;
 import com.course.implement.newsapp.R;
 import com.course.implement.newsapp.adapter.NewsAdapter;
 import com.course.implement.newsapp.data.Article;
-import com.course.implement.newsapp.databinding.FragmentTeslaBinding;
+import com.course.implement.newsapp.databinding.FragmentAllNewsBinding;
 import com.course.implement.newsapp.utils.Config;
 import com.course.implement.newsapp.viewmodel.NewsViewModel;
 import com.course.implement.newsapp.viewmodel.NewsViewModelFactory;
 
 import java.util.List;
 
-public class TeslaFragment extends Fragment implements NewsAdapter.OnclickItemListener{
-
-    private FragmentTeslaBinding binding;
-    private NewsAdapter adapter;
+public class AllNewsFragment extends Fragment implements NewsAdapter.OnclickItemListener{
+    private FragmentAllNewsBinding binding;
     private NewsViewModel viewModel;
-    private List<Article> mArticles;
+    private NewsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tesla, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_news, container, false);
+
         NewsViewModelFactory factory = new NewsViewModelFactory(Config.application);
         viewModel = new ViewModelProvider(requireActivity(), factory).get(NewsViewModel.class);
-        viewModel.getTeslaArticles(BuildConfig.NEWS_API_KEY).observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
+
+        viewModel.getAllNewsArticles(BuildConfig.NEWS_API_KEY).observe(getViewLifecycleOwner(), new Observer<List<Article>>() {
             @Override
             public void onChanged(List<Article> articles) {
-                mArticles = articles;
                 if (articles !=null && articles.size() > 0){
                     prepareRecyclerView(articles);
                 }
             }
         });
-
         return binding.getRoot();
     }
 
 
-
     private void prepareRecyclerView(List<Article> articleList) {
-        binding.rvArticles.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL
-        , false));
+        binding.rvAllNews.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL
+                , false));
 
-        binding.rvArticles.setHasFixedSize(true);
-        binding.rvArticles.setItemAnimator(new DefaultItemAnimator());
+        binding.rvAllNews.setHasFixedSize(true);
+        binding.rvAllNews.setItemAnimator(new DefaultItemAnimator());
         adapter = new NewsAdapter(requireContext(), this, articleList);
 
-        binding.rvArticles.setAdapter(adapter);
+        binding.rvAllNews.setAdapter(adapter);
     }
 
     @Override
@@ -74,5 +71,4 @@ public class TeslaFragment extends Fragment implements NewsAdapter.OnclickItemLi
         intent.putExtra(Config.NEWS_CONTENT, article.getContent());
         startActivity(intent);
     }
-
 }
